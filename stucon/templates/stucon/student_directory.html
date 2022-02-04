@@ -1,0 +1,13 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1>Student Directory</h1>
+    <h3>{{ cohort }}</h3>
+    <p>
+        {% for student in student_list %}
+        <p class="clearfix">
+        {{ student.name }} <img src={{ student.image.url }} class="img-fluid img-thumbnail float-start" width="200em">
+        </p>
+        {% endfor %}
+    </p>
+
+{% endblock %}

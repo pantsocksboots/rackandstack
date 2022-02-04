@@ -1,0 +1,58 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1>Manage Students</h1>
+    <p>
+        <div>
+            <a class="btn btn-outline-primary" href="{% url 'stucon:create_student_user' %}">Create Student</a>
+            <a class="btn btn-outline-primary" href="{% url 'stucon:bulk_create_students' %}">Bulk CSV Upload</a>
+            <a class="btn btn-outline-primary" href="{% url 'stucon:dump_student_data' %}">CSV Data Export</a>
+        </div>
+    </br>
+        <form
+        hx-get="{% url 'stucon:bulk_edit_results' %}"
+        hx-target="#bulk-results"
+        hx-swap="outerHTML"
+        hx-trigger="submit, input delay:0.3s"
+        >
+            <div class="container">
+                <div class="row">
+                    <div class="column col-3">
+                        Search:
+                        <input type="text" class="form-control" name="search" placeholder="Filter..." value="{{ search }}">
+                    </div>
+                    <div class="column col-3">
+                        Status:
+                        <select class="form-control" name="status" id="status">
+                            <option value="all">All</option>
+                            <option value="act">Active</option>
+                            <option value="dor">DOR</option>
+                            <option value="perf">Perf Drop</option>
+                            <option value="med">Med Drop</option>
+                        </select>
+                    </div>
+                    <div class="column col-3">
+                        Sort by:
+                        <select class="form-control" name="sortby" id="sortby">
+                            <option value="name">Name</option>
+                            <option value="cn">Candidate Number</option>
+                            <option value="source">Source</option>
+                            <option value="cohort">Cohort</option>
+                        </select>
+                    </div>
+                </div>
+            </div>            
+        </form>
+    </br>
+    <div hx-include="#bulk-update" hx-target="#bulk-results">
+        Status Actions:
+        <a class="btn btn-outline-success" hx-post="{% url 'stucon:bulk_status_update' 0 %}">Active</a>
+        <a class="btn btn-outline-danger" hx-post="{% url 'stucon:bulk_status_update' 1 %}">DOR</a>
+        <a class="btn btn-outline-danger" hx-post="{% url 'stucon:bulk_status_update' 2 %}">Perf Drop</a>
+        <a class="btn btn-outline-danger" hx-post="{% url 'stucon:bulk_status_update' 3 %}">Med Drop</a>
+    </div>
+    </br>
+        {% include 'stucon/bulk_edit_results.html' %}
+    </p>
+    
+
+{% endblock %}

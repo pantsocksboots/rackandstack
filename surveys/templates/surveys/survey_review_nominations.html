@@ -1,0 +1,18 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+<h1> Nominations Review </h1>
+<form 
+hx-get="{% url 'surveys:nom_search_view' %}"
+hx-target="#searchresults"
+hx-swap="outerHTML"
+hx-trigger="submit, input delay:0.3s, every 60s"
+>
+    <input type="text" class="form-control" name="search" placeholder="Filter..." value="{{ search }}">
+    <input type="checkbox" id="negative-sort" name="negative-sort" value="negative-sort">
+    <label for="negative-sort">Sort by Negative (blank will sort by Positives)</label><br>
+</form>
+<p>
+    {% include 'surveys/nom_search_results.html' %}
+</p>
+
+{% endblock %}

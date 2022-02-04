@@ -1,0 +1,22 @@
+<tr>
+    <td><input 
+        hx-target="closest tr"
+        hx-swap="outerHTML"
+        hx-get="{% url 'stucon:status_comment_view_checked' student.id %}"
+        type="checkbox"
+        name="ids"
+        value="{{ student.id }}"
+        >
+    </td>
+    <td><a href="{% url 'stucon:student_view' student.id %}"> {{ student.candidate_number }} </a></td>
+    <td>{{ student.name }}</td>
+    <td>{{ student.cohort }}</td>
+    <td>{{ student.source }}</td>
+    <td>{{ student.status }}</td>
+    <td>
+        {{ student.status_comment }}
+        <!--<input type='text' name='comment' value='{{ student.status_comment }}'> -->
+    </td>
+    <td><a href="{% url 'stucon:student_edit' student.id %}"> Edit </a></td>
+    <td><a href="{% url 'stucon:student_delete' student.id %}"> Delete </a></td>
+</tr>

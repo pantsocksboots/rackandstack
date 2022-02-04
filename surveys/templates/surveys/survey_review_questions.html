@@ -1,0 +1,16 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+<h1> Q&A Review </h1>
+<form 
+hx-get="{% url 'surveys:qa_search_view' %}"
+hx-target="#searchresults"
+hx-swap="outerHTML"
+hx-trigger="submit, input delay:0.3s, every 60s"
+>
+    <input type="text" class="form-control" name="search" placeholder="Filter..." value="{{ search }}">
+</form>
+<p>
+    {% include 'surveys/qa_search_results.html' %}
+</p>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1> Survey Review </h1>
+    <p>
+        <a class="btn btn-outline-primary" href="{% url 'surveys:survey_review_nominations' %}">Nominations</a>
+        <a class="btn btn-outline-primary" href="{% url 'surveys:survey_review_questions' %}">Short Answer</a>
+        <a class="btn btn-outline-primary" href="{% url 'surveys:survey_review_topbot5' %}">Top Five / Bottom Five</a>
+    </p>
+
+{% endblock %}

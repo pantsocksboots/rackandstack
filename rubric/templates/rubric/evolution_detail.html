@@ -1,0 +1,20 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1>{{ evolution.name }}</h1>
+
+    <p>
+        <em> {{ evolution.description}} </em>
+    </p>
+
+    <p>
+        The following traits are graded during {{ evolution.name }}:
+    <ul>
+    {% for t in evolution.traits.all %}
+        <li>
+            {{ t.trait }}
+        </li>
+    {% endfor %}
+    </ul>
+    </p>
+
+{% endblock %}

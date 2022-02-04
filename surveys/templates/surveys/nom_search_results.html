@@ -1,0 +1,16 @@
+<div id="searchresults">
+    <table class="table table-hover p-3 m-3">
+        <tr>
+            <th>Student</th><th>Cohort</th><th>Source</th><th>Positive Nominations</th><th>Negative Nominations</th>
+        </tr>
+        {% for row in data %}
+        <tr>
+            <td><a href={% url 'stucon:student_view' row.student.id %}>{{ row.student }}</a></td>
+            <td>{{ row.student.cohort }}</td>
+            <td>{{ row.student.source }}</td>
+            <td>{{ row.pos_noms }}</td>
+            <td>{{ row.neg_noms }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

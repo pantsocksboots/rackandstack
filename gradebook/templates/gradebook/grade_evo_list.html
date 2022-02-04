@@ -1,0 +1,77 @@
+{% extends "base_bootstrap_nav.html" %}
+
+{% block content %}
+<h1>Grading {{ evolution }} - {{ cohort }}</h1>
+<p>
+    <a class="btn btn-outline-primary" target="_blank" href="{% url 'stucon:student_directory' cohort.pk %}">Student Picture Directory</a>
+</p>
+<p>
+    <table class="table table-hover" id="grades">
+        {% if evolution.type == 'subj' %}
+            <!-- Subjective Evolution Gradesheet -->
+            <tr class="text-center">
+                <th class="text-start"><h3> Student </h3></th>
+                {% for trait in evolution.traits.all %}
+                <th>
+                    <h3>{{ trait }}</h3>
+                </th>
+                {% endfor %}
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td><a href="{% url 'stucon:student_view' student.id %}">{{ student }}</a></td>
+                {% for trait in evolution.traits.all %}
+                    <td>
+                        {% for score in scores %}
+                            {% if score.trait.id == trait.id and score.student.id == student.id %}
+                                <div class="text-center"><h5>{{ score.score }}</h5></div> {% if score.comment %}<em><small>{{ score.comment }}</small></em> {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+                <td>
+                    <small>
+                        <a href="{% url 'gradebook:grade_evo' student.id evolution.id %}">Edit</a> | 
+                        <a href="{% url 'gradebook:grade_evo_delete' student.id evolution.id %}">Delete</a>
+                    </small>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <!-- Objective Evolution Gradelist -->
+            <tr>
+                <th> Student </th>
+                <th>
+                    {% if evolution.type == 'time' %}Time
+                    {% elif evolution.type == 'count' %}Count
+                    {% else %} Pass/Fail {% endif %}
+                </th>
+                <th>Actions</th>
+            </tr>
+            {% for student in students %}
+            <tr>
+                <td><a href="{% url 'stucon:student_view' student.id %}">{{ student }}</a></td>
+                <td>
+                    {% for score in scores %}
+                        {% if score.student.id == student.id %}
+                            {% if evolution.type == 'time' %}
+                                {{ score.get_time_as_str }}
+                            {% else %}
+                                {{ score.score }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    <small>
+                    <a href="{% url 'gradebook:grade_evo' student.id evolution.id %}">Edit</a> | 
+                    <a href="{% url 'gradebook:grade_evo_delete' student.id evolution.id %}">Delete</a>
+                    </small>
+                </td>
+            </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+</p>
+            
+{% endblock %}

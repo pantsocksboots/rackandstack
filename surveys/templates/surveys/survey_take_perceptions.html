@@ -1,0 +1,26 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<p>
+  <h1>{{ survey }}: Perceptions</h1>
+  Instructions: For the student listed, read the statement and make a selection.
+</p>
+<p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        {% for question, teammate, form in data %}
+        <div class="border border-3 border-primary rounded-3 p-3 m-3">
+            <h4>{{ teammate.name }}</h4>
+            <h5><em>{{ question }}</em></h5>
+            {{ form|crispy }}
+        </div>
+        {% endfor %}
+      <div class= "p-3 m-3">
+        <input class="btn btn-outline-primary" type="submit" value="Submit">
+        <input class="btn btn-outline-warning" type="submit" value="Cancel" onclick="window.location.href='{% url 'surveys:survey_take' survey.id %}';return false;">
+      </div>
+    </form>
+  </p>
+
+{% endblock %}

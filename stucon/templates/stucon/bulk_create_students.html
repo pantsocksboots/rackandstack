@@ -1,0 +1,30 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<h1>Create Students from CSV</h1>
+<p>
+    {% if issues %}
+    The file was not uploaded due to the following issues:
+    <ul>
+    {% for issue in issues %}
+        <li>{{ issue }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    <p>
+        The first line of the CSV file will be read as headers. Use the following as the first line in your CSV file to insure you have the proper format:
+        <pre class="border border-2 bg-dark text-white m-3 p-3"><code>CN,first_name,last_name,username,password,source,cohort</code></pre>
+    </p>
+    <p>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file1"> Upload a file</label>
+            <input class="form-control" type="file" id="file1" name="file">
+            <small>Only accepts CSV files</small>
+            </br>
+            <input class="btn m-3 btn-outline-primary" type="submit" value="Submit">
+        </form>
+    </p>
+  </p>
+
+{% endblock %}

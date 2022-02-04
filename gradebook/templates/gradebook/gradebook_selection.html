@@ -1,0 +1,22 @@
+{% extends "base_bootstrap_nav.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<h1>Choose an Evolution</h1>
+
+<h2>Select an evolution to grade:</h2>
+
+<p>
+    <form action="" method="get">
+      {% csrf_token %}
+      {{ form|crispy }}
+    </br>
+      <input class="btn btn-outline-primary" type="submit" value="Submit">
+      <input class="btn btn-outline-danger" type="submit" value="Cancel" onclick="window.location.href='{% url 'gradebook:gradebook_menu' %}';return false;">
+    </form>
+  </p>
+
+
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base_bootstrap_nav.html" %}
+
+{% block content %}
+
+<h1>Gradebook</h1>
+
+<h2>Select an action:</h2>
+
+<ul>
+    <li>
+        <a href="{% url 'gradebook:gradebook_selection' %}">Grade an Evolution</a>
+    </li>
+    {% if user.is_superuser %}
+    <li>
+        <a href="{% url 'gradebook:gradebook_csv_dump' %}">Export Grades as CSV</a>
+    </li>
+    {% endif %}
+</ul>
+
+
+
+{% endblock %}

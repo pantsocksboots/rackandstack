@@ -1,0 +1,25 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1> {{survey.name }}</h1>
+    <p>
+        {% if survey.nomination_qs.count > 0 %}
+            <a class="btn {% if survey_progress.nom_responses %}btn-outline-success{% else %}btn-outline-primary{% endif %}" href="{% url 'surveys:survey_take_nominations' survey.id %}">Nominations</a>
+        {% endif %}
+        {% if survey.perception_qs.count > 0 %}
+            <a class="btn {% if survey_progress.per_responses %}btn-outline-success{% else %}btn-outline-primary{% endif %}" href="{% url 'surveys:survey_take_perceptions' survey.id %}">Perceptions</a>
+        {% endif %}
+        {% if survey.peer_feedback %}
+            <a class="btn {% if survey_progress.pf_responses %}btn-outline-success{% else %}btn-outline-primary{% endif %}" href="{% url 'surveys:survey_take_pf' survey.id %}">Peer Feedback</a>
+        {% endif %}
+        {% if survey.survey_qs.count > 0 %}
+            <a class="btn {% if survey_progress.sur_responses %}btn-outline-success{% else %}btn-outline-primary{% endif %}" href="{% url 'surveys:survey_take_qa' survey.id %}">Short Answer</a>
+        {% endif %}
+        {% if survey.topbot5 %}
+            <a class="btn {% if survey_progress.top5_responses %}btn-outline-success{% else %}btn-outline-primary{% endif %}" href="{% url 'surveys:survey_take_topbot5' survey.id %}">Top Five / Bottom Five</a>
+        {% endif %}
+    </p>
+    <p>
+        <a class="btn btn-outline-primary" target="_blank" href="{% url 'stucon:student_directory' cohort.pk %}">Student Picture Directory</a>
+    </p>
+
+{% endblock %}

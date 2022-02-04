@@ -1,0 +1,33 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<p>
+  <h1>{{ survey }}: Top 5 / Bottom 5</h1>
+  Instructions: Select your Top 5 and Bottom 5 from the class. Order does not matter. You cannot select the same student twice in the same survey.
+</p>
+<p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ tf_formset.management_form }}
+        <h3> Top 5 </h3>
+        {% for form in tf_formset %}
+        <div class="border border-3 border-primary rounded-3 p-3 m-3 w-25 d-inline-block">
+            {{ form|crispy }}
+        </div>
+        {% endfor %}
+      </br>
+        {{ bf_formset.management_form }}
+        <h3> Bottom 5 </h3>
+        {% for form in bf_formset %}
+        <div class="border border-3 border-danger rounded-3 p-3 m-3 w-25 d-inline-block">
+            {{ form|crispy }}
+        </div>
+        {% endfor %}
+      <div class= "p-3 m-3">
+        <input class="btn btn-outline-primary" type="submit" value="Submit">
+        <input class="btn btn-outline-warning" type="submit" value="Cancel" onclick="window.location.href='{% url 'surveys:survey_take' survey.id %}';return false;">
+      </div>
+    </form>
+  </p>
+
+{% endblock %}

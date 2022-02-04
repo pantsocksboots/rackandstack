@@ -1,0 +1,52 @@
+{% extends "base_bootstrap_nav.html" %}
+
+{% block content %}
+{% if user_is_student or user_is_course_admin %}
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-outline-primary" href="{% url "surveys:survey_list" %}">Surveys</a>
+    {% if user_is_course_admin %}
+    <a class="btn btn-outline-primary" href="{% url "surveys:survey_review_menu" %}">Survey Review</a>
+    {% endif %}
+    {% if user_is_student %}
+    <a class="btn btn-outline-primary" href="{% url "stucon:upload_image" %}">Upload a Picture</a>
+    {% endif %}
+</div>
+</br>
+{% endif %}
+
+{% if user_is_course_admin %}
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-outline-primary" href="{% url "rubric:evolution_list" %}">Evolutions</a>
+    <a class="btn btn-outline-primary" href="{% url "stucon:student_list" %}">Students</a>
+</div>
+
+</br>
+{% endif %}
+
+{% if user_is_grader or user_is_course_admin %}
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-outline-primary" href="{% url "gradebook:gradebook_menu" %}">Gradebook</a>
+</div>
+
+</br>
+
+{% endif %}
+
+{% if user_is_course_admin %}
+<div class="container ">
+    <div class="row justify-content-center">
+        <div class="col text-left">
+            <h4>Stats</h4>
+            <ul class="list-unstyled">
+                <li>Students Enrolled: {{ num_students }} </li>
+                <li>Evolutions: {{ num_evos }} </li>
+                <li>Scores Recorded: {{ num_scores }} </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}

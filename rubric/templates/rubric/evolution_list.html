@@ -1,0 +1,39 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1>Evolutions</h1>
+    <p>
+        <a href="{% url 'rubric:evolution_create' %}">Create Subjective Evolution</a> | 
+        <a href="{% url 'rubric:obj_evolution_create' %}">Create Objective Evolution</a> | 
+        <a href="{% url 'rubric:evolution_csv_dump' %}">CSV Dump</a>
+    {% if page_obj %}
+    <ul>
+    {% for evolution in page_obj.object_list %}
+        <li>
+            <a href="{% url 'rubric:evolution_edit' evolution.id %}"> {{ evolution.name }} </a>
+             {% for t in evolution.traits.all %} | <small> <em> {{ t.trait }} </em> </small> {% endfor %}
+        </li>
+    {% endfor %}
+    </ul>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <p>There are no evolutions in the database.</p>
+    {% endif %}
+    </p>
+
+{% endblock %}

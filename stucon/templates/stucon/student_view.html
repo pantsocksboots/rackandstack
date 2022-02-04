@@ -1,0 +1,38 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+<div>
+    <img src={{ student.image.url }} class="img-fluid img-thumbnail float-start" width="300em">
+    <h1>{{ student.name }} | {{ student.candidate_number }}</h1>
+    <p>
+        Source: {{ student.source }} </br>
+        Cohort: {{ student.cohort }} </br>
+        {% if student.team %}
+        Team: {{ student.team }}
+        {% endif %}
+    </p>
+</div>
+    <p class="clearfix">
+        <h3>Trait Summary</h3>
+        <ul class="list-group">
+            {% for trait_name, trait_avg in trait_averages.items %}
+            <li class="list-group-item">{{ trait_name }}: {{ trait_avg.0 }} <small>({{ trait_avg.1 }} data points)</small></li>
+            {% endfor %}
+        </ul>
+    </p>
+    <p>
+        <h3>Peer Evaluations Summary</h3>
+        <ul class="list-group">
+            <li class="list-group-item">Positive Nominations: {{ pos_noms }}</li>
+            <li class="list-group-item">Negative Nominations: {{ neg_noms }}</li>
+            <li class="list-group-item">Top Fives: {{ topfive_count }}</li>
+            <li class="list-group-item">Bottom Fives: {{ botfive_count }}</li>
+            {% if self_perceptions %}
+            <li class="list-group-item">Self Perception: {{ self_perceptions }} / 4.00</li>
+            {% endif %}
+            {% if others_perceptions != None %}
+            <li class="list-group-item">Others Perception: {{ others_perceptions }} / 4.00</li>
+            {% endif %}
+            <li class="list-group-item"><a href="#">Comments...</a></li>
+    </p>
+
+{% endblock %}

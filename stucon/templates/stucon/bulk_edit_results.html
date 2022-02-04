@@ -1,0 +1,36 @@
+<div id="bulk-results">
+    <form id="bulk-update">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th><th>Candidate #</th> <th>Name</th><th>Cohort</th><th>Source</th><th>Status</th><th>Notes</th><th></th><th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td><input 
+                            hx-target="closest tr"
+                            hx-swap="outerHTML"
+                            hx-get="{% url 'stucon:status_comment_view_checked' student.id %}"
+                            type="checkbox"
+                            name="ids"
+                            value="{{ student.id }}"
+                            >
+                        </td>
+                        <td><a href="{% url 'stucon:student_view' student.id %}"> {{ student.candidate_number }} </a></td>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.cohort }}</td>
+                        <td>{{ student.source }}</td>
+                        <td>{{ student.status }}</td>
+                        <td>
+                            <small>{{ student.status_comment }}</small>
+                        </td>
+                        <td><a href="{% url 'stucon:student_edit' student.id %}"> Edit </a></td>
+                        <td><a href="{% url 'stucon:student_delete' student.id %}"> Delete </a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>

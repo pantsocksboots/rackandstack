@@ -1,0 +1,49 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1>Students</h1>
+    <p>
+        <a class="btn btn-outline-primary" href="{% url 'stucon:create_student_user' %}">Create Student</a>
+        <a class="btn btn-outline-primary" href="{% url 'stucon:bulk_edit_list' %}">Manage Students</a>
+    {% if page_obj %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th> Candidate # </th> <th>Name</th><th>Cohort</th><th>Source</th><th> </th> <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in page_obj.object_list %}
+            <tr>
+                <td><a href="{% url 'stucon:student_view' student.id %}"> {{ student.candidate_number }} </a></td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.cohort }}</td>
+                <td>{{ student.source }}</td> 
+                <td><a href="{% url 'stucon:student_edit' student.id %}"> Edit </a></td>
+                <td><a href="{% url 'stucon:student_delete' student.id %}"> Delete </a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+    
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    {% else %}
+    <p>There are no students in the database.</p>
+    {% endif %}
+    </p>
+
+{% endblock %}

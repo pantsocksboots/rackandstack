@@ -1,0 +1,21 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<h1>Grading {{ evolution }} for {{ student }}</h1>
+<p>
+    <form action="" method="post">
+      {% csrf_token %}
+      {{ formset.management_form }}
+      {% for form, trait in data %}
+      <div class="border border-3 border-primary rounded-3 p-3 m-3 ">
+        <b>{{trait}}</b>
+        {{ form|crispy }}
+      </div>
+    </br>
+      {% endfor %}
+      <input class="btn btn-outline-primary" type="submit" value="Submit">
+      <input class="btn btn-outline-danger" type="submit" value="Cancel" onclick="window.location.href='{% url 'gradebook:grade_evo_list' student.cohort.id evolution.id %}';return false;">
+    </form>
+  </p>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base_bootstrap_nav.html" %}
+{% block content %}
+    <h1>{{ survey.name }}</h1>
+
+    <p>
+        <h3>Nominations</h3>
+        <ul class="list-group">
+            {% for nom_q in survey.nomination_qs.all %}
+            <li class="list-group-item">{{ nom_q }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Perceptions</h3>
+        <ul class="list-group">
+            {% for per_q in survey.perception_qs.all %}
+            <li class="list-group-item">{{ per_q }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Q&As</h3>
+        <ul class="list-group">
+            {% for sur_q in survey.survey_qs.all %}
+            <li class="list-group-item">{{ sur_q }}</li>
+            {% endfor %}
+        </ul>
+        <h3>Peer Feedback: {{ survey.peer_feedback }}</h3>
+        <h3>Top Five / Bottom Five: {{ survey.topbot5 }}</h3>
+    </p>
+
+{% endblock %}

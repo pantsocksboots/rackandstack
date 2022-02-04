@@ -1,0 +1,20 @@
+<div id="searchresults">
+    {% for q in questions %}
+    <div class="border border-3 rounded-3 p-3 m-3">
+        <h3>{{ q.question }}</h3>
+        <table class="table table-hover">
+            <tr>
+                <th>Student</th><th>Cohort</th><th>Source</th><th>Question Response</th>
+            </tr>
+            {% for response in q.responses.all %}
+            <tr>
+                <td><a href={% url 'stucon:student_view' response.author.id %}>{{ response.author }}</a></td>
+                <td>{{ response.author.cohort }}</td>
+                <td>{{ response.author.source }}</td>
+                <td>{{ response.text }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
+</div>
