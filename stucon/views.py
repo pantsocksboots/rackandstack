@@ -296,7 +296,7 @@ def get_perceptions_avgs(student_id):
         "others": others_perception,
     }
 
-
+@user_passes_test(course_admin_check)
 def student_view(request, student_id):
     student = get_object_or_404(Student.objects.all(), pk=student_id)
     trait_averages = {}

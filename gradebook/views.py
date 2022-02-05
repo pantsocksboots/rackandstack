@@ -297,10 +297,11 @@ def grade_evo_delete(request, student_id, evolution_id):
                     )
                     ts.delete()
         else:
-            os = get_object_or_404(
-                ObjectiveScore, student=student_id, evolution=evolution_id
-            )
-            os.delete()
+            if ObjectiveScore.objects.filter(student=student_id, evolution=evolution_id).exists():
+                os = get_object_or_404(
+                    ObjectiveScore, student=student_id, evolution=evolution_id
+                )
+                os.delete()
         messages.add_message(
             request,
             messages.SUCCESS,

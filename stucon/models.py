@@ -47,7 +47,7 @@ class Student(models.Model):
     )
     status_comment = models.CharField(max_length=240, null=True, blank=True, default="")
     image = models.ImageField(
-        upload_to="images/", default="default_pic.png", null=True, blank=True
+        upload_to="images/", default="default_pic.png", null=False, blank=False
     )
 
     def __str__(self):
