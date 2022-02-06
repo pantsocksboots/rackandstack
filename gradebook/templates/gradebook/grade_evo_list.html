@@ -24,7 +24,7 @@
                     <td>
                         {% for score in scores %}
                             {% if score.trait.id == trait.id and score.student.id == student.id %}
-                                <div class="text-center"><h5>{{ score.score }}</h5></div> {% if score.comment %}<em><small>{{ score.comment }}</small></em> {% endif %}
+                                <div class="text-center"><h5>{{ score.score }}</h5></div> {% if score.comment %}<div class="text-center"><em><small class="text-muted">{{ score.comment }}</small></em> </div>{% endif %}
                             {% endif %}
                         {% endfor %}
                     </td>

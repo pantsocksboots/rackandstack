@@ -1,6 +1,41 @@
-{% extends "base_bootstrap_nav.html" %}
+{% extends "base_bootstrap_nav_splash.html" %}
 
 {% block content %}
+{% if not user.is_authenticated %}
+<div class="container m-2 p-2">
+    <h2 class="display-3">Welcome to Rack and Stack - the data platform for Assessment and Selection.</br>
+        <small class="display-6 text-muted">Designed to save time, money and headaches.</small></h2>
+    
+</br>
+    <p class="lead">
+        Current capabilities: 
+        <ul class="lead">
+            <li>Create Curriculum and Grading Criteria</li>
+            <li>Manage student enrollments and class/block assignments</li>
+            <li>Record grades and comments</li>
+            <li>Create and administer surveys with six different survey question formats</li>
+            <li>Export all data directly to CSV format - no vendor-locked proprietary formats here.</li>
+        </ul>        
+    </p>
+</div>
+<div class="container m-2 p-2">
+    <p class="lead">
+        Benefits:
+        <ul class="lead">
+            <li>Free, open-source, and fully auditable. No bloated software contracts!</li>
+            <li>Designed for <em>simplicity</em> and <em>utility</em> - not overcomplicated with flashy programming.</li>
+            <li>No need to scrape a webpage or beg a vendor for your data - it's yours, just click "Export".</li>
+            <li>Homegrown solution for a real-world problem. Innovation from within!</li>
+        </ul>
+    </p>
+</div>
+<div class="container m-2 p-2">
+    <p class="text-center fs-6">
+        <small>Suggestions and feedback welcome at pantsocksboots@protonmail.com</small>
+        <small>Check out the <a href="https://github.com/pantsocksboots/rackandstack">Github</a> to contribute or learn more.</small>
+    </p>
+</div>
+{% endif %}
 {% if user_is_student or user_is_course_admin %}
 <div class="d-grid gap-2 col-6 mx-auto">
     <a class="btn btn-outline-primary" href="{% url "surveys:survey_list" %}">Surveys</a>
@@ -33,7 +68,7 @@
 {% endif %}
 
 {% if user_is_course_admin %}
-<div class="container ">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col text-left">
             <h4>Stats</h4>
