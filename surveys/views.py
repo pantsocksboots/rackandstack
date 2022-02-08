@@ -13,6 +13,10 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 
+import csv
+import io
+import copy
+
 from stucon.models import Student
 from .models import (
     Survey,
@@ -123,7 +127,8 @@ def survey_delete(request, survey_id):
     if request.method == "POST":
         survey = Survey.objects.get(pk=survey_id)
         survey_name = survey.name
-        survey.delete()  # Delete the User object instead of the Student object - Cascade will delete the Student.
+        # Delete the User object instead of the Student object - Cascade will delete the Student.
+        survey.delete()
         messages.add_message(
             request, messages.SUCCESS, f"Successfully deleted {survey_name}."
         )
@@ -147,7 +152,8 @@ def survey_take_menu(request, survey_id):
                 "The survey you are attempting to take is not active. Please select an active survey.",
             )
             return HttpResponseRedirect(reverse("surveys:survey_list"))
-        survey_progress = survey.check_authored_responses_exist(request.user.id)
+        survey_progress = survey.check_authored_responses_exist(
+            request.user.id)
 
     return TemplateResponse(
         request,
@@ -163,10 +169,12 @@ def survey_take_menu(request, survey_id):
 @user_passes_test(student_check)
 def survey_take_nominations(request, survey_id):
     survey = get_object_or_404(Survey.objects.all(), pk=survey_id)
-    student_user = get_object_or_404(Student.objects.all(), user_id=request.user.id)
+    student_user = get_object_or_404(
+        Student.objects.all(), user_id=request.user.id)
     nomination_forms = []
     questions = []
-    NominationResponseFormset = formset_factory(NominationResponseForm, extra=0)
+    NominationResponseFormset = formset_factory(
+        NominationResponseForm, extra=0)
 
     if request.method == "POST":
         fs = NominationResponseFormset(request.POST, request.FILES)
@@ -187,10 +195,12 @@ def survey_take_nominations(request, survey_id):
                     nom_response.save()
                 else:
                     nom_response = form.save(commit=False)
-                    nom_response.author = Student.objects.get(user_id=request.user.id)
+                    nom_response.author = Student.objects.get(
+                        user_id=request.user.id)
                     nom_response.survey = Survey.objects.get(pk=survey_id)
                     nom_response.save()
-            messages.add_message(request, messages.SUCCESS, "Nominations saved.")
+            messages.add_message(request, messages.SUCCESS,
+                                 "Nominations saved.")
             return HttpResponseRedirect(
                 reverse("surveys:survey_take", kwargs={"survey_id": survey_id})
             )
@@ -263,11 +273,13 @@ def survey_take_nominations(request, survey_id):
 @user_passes_test(student_check)
 def survey_take_perceptions(request, survey_id):
     survey = get_object_or_404(Survey.objects.all(), pk=survey_id)
-    student_user = get_object_or_404(Student.objects.all(), user_id=request.user.id)
+    student_user = get_object_or_404(
+        Student.objects.all(), user_id=request.user.id)
     question_list = []
     teammate_list = []
     perception_forms = []
-    PerceptionResponseFormset = formset_factory(PerceptionResponseForm, extra=0)
+    PerceptionResponseFormset = formset_factory(
+        PerceptionResponseForm, extra=0)
 
     if request.method == "POST":
         fs = PerceptionResponseFormset(request.POST, request.FILES)
@@ -367,10 +379,12 @@ def survey_take_perceptions(request, survey_id):
 
 @user_passes_test(student_check)
 def survey_take_topbot5(request, survey_id):
-    student_user = get_object_or_404(Student.objects.all(), user_id=request.user.id)
+    student_user = get_object_or_404(
+        Student.objects.all(), user_id=request.user.id)
     survey = get_object_or_404(Survey.objects.all(), pk=survey_id)
     TopFiveResponseFormset = formset_factory(TopFiveResponseForm, extra=0)
-    BottomFiveResponseFormset = formset_factory(BottomFiveResponseForm, extra=0)
+    BottomFiveResponseFormset = formset_factory(
+        BottomFiveResponseForm, extra=0)
 
     tf_forms = []
     bf_forms = []
@@ -547,12 +561,14 @@ def survey_take_topbot5(request, survey_id):
 
 @user_passes_test(student_check)
 def survey_take_pf(request, survey_id):
-    student_user = get_object_or_404(Student.objects.all(), user_id=request.user.id)
+    student_user = get_object_or_404(
+        Student.objects.all(), user_id=request.user.id)
     survey = get_object_or_404(Survey.objects.all(), pk=survey_id)
     teammates = Student.objects.filter(
         team=student_user.team, cohort=student_user.cohort, status="act"
     )
-    PeerFeedbackResponseFormset = formset_factory(PeerFeedbackResponseForm, extra=0)
+    PeerFeedbackResponseFormset = formset_factory(
+        PeerFeedbackResponseForm, extra=0)
     pf_forms = []
 
     if request.method == "POST":
@@ -596,7 +612,8 @@ def survey_take_pf(request, survey_id):
                 reverse("surveys:survey_take", kwargs={"survey_id": survey_id})
             )
         else:
-            messages.add_message(request, messages.ERROR, "Invalid Form Entry.")
+            messages.add_message(request, messages.ERROR,
+                                 "Invalid Form Entry.")
             data = zip(teammates, fs)
             return TemplateResponse(
                 request,
@@ -647,8 +664,10 @@ def survey_take_pf(request, survey_id):
 @user_passes_test(student_check)
 def survey_take_qa(request, survey_id):
     survey = get_object_or_404(Survey.objects.all(), pk=survey_id)
-    student_user = get_object_or_404(Student.objects.all(), user_id=request.user.id)
-    SurveyQuestionResponseFormset = formset_factory(SurveyQuestionResponseForm, extra=0)
+    student_user = get_object_or_404(
+        Student.objects.all(), user_id=request.user.id)
+    SurveyQuestionResponseFormset = formset_factory(
+        SurveyQuestionResponseForm, extra=0)
     q_forms = []
 
     if request.method == "POST":
@@ -682,7 +701,8 @@ def survey_take_qa(request, survey_id):
                 reverse("surveys:survey_take", kwargs={"survey_id": survey_id})
             )
         else:
-            messages.add_message(request, messages.ERROR, "Invalid Form Entry.")
+            messages.add_message(request, messages.ERROR,
+                                 "Invalid Form Entry.")
             data = zip(survey.survey_qs.all(), fs)
             return TemplateResponse(
                 request,
@@ -777,6 +797,7 @@ def survey_review_topbot5(request):
     )
 
 
+@user_passes_test(course_admin_check)
 def topbot5_search_view(request):
     top5data, bot5data = get_topbot5_data(request)
     return render(
@@ -789,6 +810,7 @@ def topbot5_search_view(request):
     )
 
 
+@user_passes_test(course_admin_check)
 def get_topbot5_data(request):
     all_students = Student.objects.filter(status="act")
     top5data = []
@@ -796,7 +818,8 @@ def get_topbot5_data(request):
     search = request.GET.get("search")
     if search == None:
         for student in all_students:
-            top5count = TopFiveResponse.objects.filter(top_five_select=student).count()
+            top5count = TopFiveResponse.objects.filter(
+                top_five_select=student).count()
             bot5count = BottomFiveResponse.objects.filter(
                 bottom_five_select=student
             ).count()
@@ -823,7 +846,8 @@ def get_topbot5_data(request):
             or search in str(student.cohort).lower()
             or search in str(student.source).lower()
         ):
-            top5count = TopFiveResponse.objects.filter(top_five_select=student).count()
+            top5count = TopFiveResponse.objects.filter(
+                top_five_select=student).count()
             bot5count = BottomFiveResponse.objects.filter(
                 bottom_five_select=student
             ).count()
@@ -854,6 +878,7 @@ def survey_review_questions(request):
     )
 
 
+@user_passes_test(course_admin_check)
 def search_question_responses(request):
     all_questions = SurveyQuestion.objects.all()
     context_questions = []
@@ -874,7 +899,8 @@ def search_question_responses(request):
     search = search.lower()
 
     for question in all_questions:
-        question_responses = SurveyQuestionResponse.objects.filter(question=question)
+        question_responses = SurveyQuestionResponse.objects.filter(
+            question=question)
         filtered_response_ids = []
         for response in question_responses:
             if (
@@ -944,3 +970,257 @@ def nom_search_view(request):
         "data": sorted_data,
     }
     return render(request, "surveys/nom_search_results.html", context)
+
+
+@user_passes_test(course_admin_check)
+def dump_csv_survey_question_data(request):
+    response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": 'attachment; filename="survey_question_data.csv"'},
+    )
+
+    writer = csv.writer(response)
+    writer.writerow(
+        ["author_last_name", "author_first_name", "author_cn",
+            "author_source", "author_cohort", "survey_name", "survey_question", "answer"]
+    )
+    survey_q_responses = SurveyQuestionResponse.objects.all()
+    for q_response in survey_q_responses:
+        writer.writerow(
+            [
+                q_response.author.user_id.last_name,
+                q_response.author.user_id.first_name,
+                q_response.author.candidate_number,
+                str(q_response.author.source),
+                str(q_response.author.cohort),
+                q_response.survey.name,
+                q_response.question.question_text,
+                q_response.text
+            ]
+        )
+
+    return response
+
+
+@user_passes_test(course_admin_check)
+def dump_csv_survey_nomination_data(request):
+    http_response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": 'attachment; filename="survey_nomination_data.csv"'},
+    )
+
+    writer = csv.writer(http_response)
+    writer.writerow(
+        [
+            "author_last_name",
+            "author_first_name",
+            "author_cn",
+            "author_source",
+            "author_cohort",
+            "survey_name",
+            "subject_cn",
+            "subject_last_name",
+            "subject_first_name",
+            "subject_source",
+            "subject_cohort",
+            "nomination_question",
+            "nomination_positive",
+            "nomination_comment",
+            "timestamp"
+        ]
+    )
+    survey_nom_responses = NominationResponse.objects.all()
+    for response in survey_nom_responses:
+        writer.writerow(
+            [
+                response.author.user_id.last_name,
+                response.author.user_id.first_name,
+                response.author.candidate_number,
+                str(response.author.source),
+                str(response.author.cohort),
+                response.survey.name,
+                response.subject.candidate_number,
+                response.subject.user_id.last_name,
+                response.subject.user_id.first_name,
+                str(response.subject.source),
+                str(response.subject.cohort),
+                response.question.question_text,
+                response.question.positive,
+                response.comment,
+                str(response.current_as_of)
+            ]
+        )
+
+    return http_response
+
+
+@user_passes_test(course_admin_check)
+def dump_csv_survey_topbot5_data(request):
+    http_response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": 'attachment; filename="survey_topbot5_data.csv"'},
+    )
+
+    writer = csv.writer(http_response)
+    writer.writerow(
+        [
+            "author_last_name",
+            "author_first_name",
+            "author_cn",
+            "author_source",
+            "author_cohort",
+            "survey_name",
+            "top_or_bottom",
+            "subject_cn",
+            "subject_last_name",
+            "subject_first_name",
+            "subject_source",
+            "subject_cohort",
+            "timestamp"
+        ]
+    )
+    survey_top5_responses = TopFiveResponse.objects.all()
+    for response in survey_top5_responses:
+        writer.writerow(
+            [
+                response.author.user_id.last_name,
+                response.author.user_id.first_name,
+                response.author.candidate_number,
+                str(response.author.source),
+                str(response.author.cohort),
+                response.survey.name,
+                "TopFive",
+                response.top_five_select.candidate_number,
+                response.top_five_select.user_id.last_name,
+                response.top_five_select.user_id.first_name,
+                str(response.top_five_select.source),
+                str(response.top_five_select.cohort),
+                str(response.current_as_of)
+            ]
+        )
+    survey_bot5_responses = BottomFiveResponse.objects.all()
+    for response in survey_bot5_responses:
+        writer.writerow(
+            [
+                response.author.user_id.last_name,
+                response.author.user_id.first_name,
+                response.author.candidate_number,
+                str(response.author.source),
+                str(response.author.cohort),
+                response.survey.name,
+                "BottomFive",
+                response.bottom_five_select.candidate_number,
+                response.bottom_five_select.user_id.last_name,
+                response.bottom_five_select.user_id.first_name,
+                str(response.bottom_five_select.source),
+                str(response.bottom_five_select.cohort),
+                str(response.current_as_of)
+            ]
+        )
+
+    return http_response
+
+
+@user_passes_test(course_admin_check)
+def dump_csv_survey_pf_data(request):
+    http_response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": 'attachment; filename="survey_pf_data.csv"'},
+    )
+
+    writer = csv.writer(http_response)
+    writer.writerow(
+        [
+            "author_last_name",
+            "author_first_name",
+            "author_cn",
+            "author_source",
+            "author_cohort",
+            "survey_name",
+            "subject_cn",
+            "subject_last_name",
+            "subject_first_name",
+            "subject_source",
+            "subject_cohort",
+            "positive_feedback",
+            "negative_feedback",
+            "timestamp"
+        ]
+    )
+    survey_pf_responses = PeerFeedbackResponse.objects.all()
+    for response in survey_pf_responses:
+        writer.writerow(
+            [
+                response.author.user_id.last_name,
+                response.author.user_id.first_name,
+                response.author.candidate_number,
+                str(response.author.source),
+                str(response.author.cohort),
+                response.survey.name,
+                response.subject.candidate_number,
+                response.subject.user_id.last_name,
+                response.subject.user_id.first_name,
+                str(response.subject.source),
+                str(response.subject.cohort),
+                response.positive_feedback,
+                response.negative_feedback,
+                str(response.current_as_of)
+            ]
+        )
+
+    return http_response
+
+
+@user_passes_test(course_admin_check)
+def dump_csv_survey_perception_data(request):
+    http_response = HttpResponse(
+        content_type="text/csv",
+        headers={
+            "Content-Disposition": 'attachment; filename="survey_perception_data.csv"'},
+    )
+
+    writer = csv.writer(http_response)
+    writer.writerow(
+        [
+            "author_last_name",
+            "author_first_name",
+            "author_cn",
+            "author_source",
+            "author_cohort",
+            "survey_name",
+            "subject_cn",
+            "subject_last_name",
+            "subject_first_name",
+            "subject_source",
+            "subject_cohort",
+            "question",
+            "score",
+            "timestamp"
+        ]
+    )
+    survey_perception_responses = PerceptionResponse.objects.all()
+    for response in survey_perception_responses:
+        writer.writerow(
+            [
+                response.author.user_id.last_name,
+                response.author.user_id.first_name,
+                response.author.candidate_number,
+                str(response.author.source),
+                str(response.author.cohort),
+                response.survey.name,
+                response.subject.candidate_number,
+                response.subject.user_id.last_name,
+                response.subject.user_id.first_name,
+                str(response.subject.source),
+                str(response.subject.cohort),
+                str(response.question),
+                response.score,
+                str(response.current_as_of)
+            ]
+        )
+
+    return http_response

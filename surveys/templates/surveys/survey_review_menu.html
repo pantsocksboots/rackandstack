@@ -6,5 +6,16 @@
         <a class="btn btn-outline-primary" href="{% url 'surveys:survey_review_questions' %}">Short Answer</a>
         <a class="btn btn-outline-primary" href="{% url 'surveys:survey_review_topbot5' %}">Top Five / Bottom Five</a>
     </p>
+</br>
+<p>
+    Export CSV Files:
+    <ul class="list-group list-group-horizontal">
+        <li class="list-group-item"><a class="btn btn-outline-secondary" href="{% url 'surveys:export_survey_question_responses' %}">Short Answer Responses</a></li>
+        <li class="list-group-item"><a class="btn btn-outline-secondary" href="{% url 'surveys:export_survey_nomination_responses' %}">Nomination Responses</a></li>
+        <li class="list-group-item"><a class="btn btn-outline-secondary" href="{% url 'surveys:export_survey_topbot5_responses' %}">Top/Bottom 5 Responses</a></li>
+        <li class="list-group-item"><a class="btn btn-outline-secondary" href="{% url 'surveys:export_survey_pf_responses' %}">Peer Feedback Responses</a></li>
+        <li class="list-group-item"><a class="btn btn-outline-secondary" href="{% url 'surveys:export_survey_perception_responses' %}">Perception Responses</a></li>
+    </ul>
+</p>
 
 {% endblock %}
