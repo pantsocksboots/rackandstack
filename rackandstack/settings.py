@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-w!7gdezdo2#2n0=x1r17@=)o(p()dd9s6be*(gimr4!g6!%l(j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["mlsusman.pythonanywhere.com", "localhost"]
+ALLOWED_HOSTS = ["www.rackandstack.dev", "localhost"]
 
 
 # Application definition
@@ -133,7 +133,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = "/home/mlsusman/django_projects/rackandstack/static"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
