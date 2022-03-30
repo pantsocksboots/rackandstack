@@ -12,6 +12,8 @@ There are multiple types of evolutions available in rubric - Evolution, TimedEvo
 
 A Trait is what is being assessed or measured by the evolution, for example, Competence (strength, endurance, aerobic capacity, general knowledge) or Character (resilience, attitude, demeanor, team ability, etc).
 
+To edit traits, user must be a course administrator.
+
 ### gradebook
 
 gradebook is responsible for all things related to recording scores in the database. It will maintain 2 separate tables: TraitScores - a table of scores for subjective traits.
