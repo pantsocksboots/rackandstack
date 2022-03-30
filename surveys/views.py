@@ -538,13 +538,13 @@ def survey_take_topbot5(request, survey_id):
     for bf_form in bf_fs:
         bf_form.fields["bottom_five_select"].queryset = (
             Student.objects.filter(cohort=student_user.cohort)
-            .order_by("candidate_number")
+            .order_by("user_id__last_name")
             .exclude(pk=student_user.pk)
         )
     for tf_form in tf_fs:
         tf_form.fields["top_five_select"].queryset = (
             Student.objects.filter(cohort=student_user.cohort)
-            .order_by("candidate_number")
+            .order_by("user_id__last_name")
             .exclude(pk=student_user.pk)
         )
 
